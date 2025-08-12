@@ -66,63 +66,16 @@
     xdotool
     wezterm
 
-    (writeShellScriptBin "multiplexer" ''
-      #!/usr/bin/env bash
-
-      export MULTIPLEXER=1
-
-      get_vim_direction() {
-          case $1 in
-              left) echo 'h'
-              ;;
-              down) echo 'j'
-              ;;
-              up) echo 'k'
-              ;;
-              right) echo 'l'
-              ;;
-              *) return 1
-              ;;
-          esac
+    (runCommand "multiplexer-nvim" { } ''
+      script_path=${
+        pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/stevalkr/multiplexer.nvim/refs/heads/main/scripts/multiplexer";
+          hash = "sha256-AsDLb8uX3XF9n94cDK04QKbTHf6SVcdkI59bHsqCVzc=";
+        }
       }
-
-      activate_pane() {
-          local dir=$(get_vim_direction "$1")
-          if [ -z "$dir" ]; then
-              return 1
-          fi
-          nvim --headless -c ":lua require('multiplexer').activate_pane('$dir')" -c ":qa"
-      }
-
-      resize_pane() {
-          local dir=$(get_vim_direction "$1")
-          if [ -z "$dir" ]; then
-              return 1
-          fi
-          nvim --headless -c ":lua require('multiplexer').resize_pane('$dir')" -c ":qa"
-      }
-
-      i3() {
-          local windowid=$(xdotool getactivewindow)
-          local instance=$(xprop -id "$windowid" WM_CLASS | awk -F '"' '{print $2}')
-          case "$instance" in
-              "org.wezfurlong.wezterm" | "kitty")
-              i3-msg mode passthrough_mode && sleep 0.2 && xdotool key --window "$windowid" "$1" Escape
-              ;;
-              *)
-              MULTIPLEXER_LIST="i3" "$2" "$3"
-              ;;
-          esac
-      }
-
-      main_command="$1"
-      if [ -z "$main_command" ]; then
-          echo "Usage: $0 [activate_pane|resize_pane] [left|down|up|right]"
-          exit 1
-      fi
-      shift
-
-      "$main_command" "$@"
+      mkdir -p $out/bin
+      cp $script_path $out/bin/multiplexer
+      chmod +x $out/bin/multiplexer
     '')
   ];
 
