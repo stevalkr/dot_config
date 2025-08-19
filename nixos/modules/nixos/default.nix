@@ -37,16 +37,26 @@
   };
 
   # Nix settings
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-  ];
+  nix = {
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
+
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users = {
     ${user} = {
       isNormalUser = true;
       description = "Steve Walker";
+      home = "/home/${user}";
       extraGroups = [
         "networkmanager"
         "wheel"
@@ -85,6 +95,9 @@
       enable = true;
       enableSSHSupport = true;
     };
+
+    _1password.enable = true;
+    _1password-gui.enable = true;
 
     bash = {
       interactiveShellInit = ''

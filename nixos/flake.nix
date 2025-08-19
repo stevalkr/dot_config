@@ -4,15 +4,22 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-stevalkr.url = "github:stevalkr/nixpkgs?ref=stevalkr-patch-fzf";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@inputs:
+    { nixpkgs, nix-darwin, home-manager, ... }@inputs:
     let
       user = "walker";
 
@@ -35,6 +42,27 @@
             ./modules/nixos
             ./modules/shared
             home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit user inputs; };
+                users.${user} = ./modules/shared/home.nix;
+              };
+            }
+          ];
+        }
+      );
+
+      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (
+        system:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit user; };
+          modules = [
+            ./modules/darwin
+            ./modules/shared
+            home-manager.darwinModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;

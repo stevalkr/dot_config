@@ -15,7 +15,7 @@
     set -as terminal-features 'xterm*:extkeys'
     set -a  terminal-features 'xterm-256color:RGB'
 
-    set -g update-environment "MULTIPLEXER MULTIPLEXAER_LIST \
+    set -g update-environment "MULTIPLEXER MULTIPLEXER_LIST \
                               I3SOCK \
                               ZELLIJ_PANE_ID ZELLIJ \
                               KITTY_WINDOW_ID KITTY_LISTEN_ON KITTY_PID \

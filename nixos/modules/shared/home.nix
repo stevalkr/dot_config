@@ -1,6 +1,7 @@
 {
   pkgs,
   user,
+  osConfig,
   inputs,
   ...
 }:
@@ -14,7 +15,7 @@
 
   home = {
     username = user;
-    homeDirectory = "/home/${user}";
+    homeDirectory = osConfig.users.users.${user}.home;
 
     file = { };
     packages = with pkgs; [
@@ -85,7 +86,7 @@
     wezterm = import ./configs/wezterm.nix;
 
     fzf = import ./configs/fzf.nix {
-      package = inputs.nixpkgs-stevalkr.legacyPackages.x86_64-linux.fzf;
+      package = inputs.nixpkgs-stevalkr.legacyPackages.${pkgs.system}.fzf;
     };
 
     direnv = {

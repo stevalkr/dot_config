@@ -202,6 +202,27 @@
         "type": "github"
       }
     },
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749744770,
+        "narHash": "sha256-MEM9XXHgBF/Cyv1RES1t6gqAX7/tvayBC1r/KPyK1ls=",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "rev": "536f951efb1ccda9b968e3c9dee39fbeb6d3fdeb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-darwin",
+        "ref": "nix-darwin-25.05",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1754800730,
@@ -214,6 +235,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stevalkr": {
+      "locked": {
+        "lastModified": 1755174849,
+        "narHash": "sha256-q4hdCkUGexRBcwiKkzF4hLJo3kwIbsbVbWbFMIv31OA=",
+        "owner": "stevalkr",
+        "repo": "nixpkgs",
+        "rev": "a6bef88f3ff366ae5d559545f814fa70db70c41b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevalkr",
+        "ref": "stevalkr-patch-fzf",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -238,7 +275,9 @@
       "inputs": {
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nixpkgs": "nixpkgs_2"
+        "nix-darwin": "nix-darwin",
+        "nixpkgs": "nixpkgs_2",
+        "nixpkgs-stevalkr": "nixpkgs-stevalkr"
       }
     },
     "treefmt-nix": {

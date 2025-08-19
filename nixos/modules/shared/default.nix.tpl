@@ -7,17 +7,11 @@
   };
 
   nix.channel.enable = false;
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
+  nix.optimise.automatic = true;
 
   nix.settings = {
     keep-outputs = true;
     keep-derivations = true;
-    auto-optimise-store = true;
     experimental-features = [
       "flakes"
       "nix-command"
@@ -38,9 +32,4 @@
   fonts.packages = with pkgs; [
     monaspace
   ];
-
-  programs = {
-    _1password.enable = true;
-    _1password-gui.enable = true;
-  };
 }
