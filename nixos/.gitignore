@@ -1,2 +1,2 @@
-/sing-box.nix
-/configuration.nix
+modules/shared/default.nix
+modules/shared/configs/sing-box.nix
