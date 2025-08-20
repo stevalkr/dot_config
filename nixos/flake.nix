@@ -19,7 +19,12 @@
   };
 
   outputs =
-    { nixpkgs, nix-darwin, home-manager, ... }@inputs:
+    {
+      nixpkgs,
+      nix-darwin,
+      home-manager,
+      ...
+    }@inputs:
     let
       user = "walker";
 
@@ -71,6 +76,19 @@
                 users.${user} = ./modules/shared/home.nix;
               };
             }
+          ];
+        }
+      );
+
+      homeConfigurations = nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (
+        system:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+          };
+          specialArgs = { inherit user inputs; };
+          modules = [
+            ./modules/shared/home.nix
           ];
         }
       );

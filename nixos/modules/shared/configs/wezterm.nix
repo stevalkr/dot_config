@@ -193,7 +193,6 @@
 
       mux_window:spawn_tab({
         args = { 'nvim', name, [[+lua require('utils').colorize()]] },
-        set_environment_variables = { PATH = '/opt/homebrew/bin:' .. os.getenv('PATH') }
       })
       window:perform_action(act.MoveTab(current_index + 1), pane)
 

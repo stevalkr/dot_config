@@ -17,12 +17,12 @@
 
     gc = {
       automatic = true;
-      interval = { Weekday = 0; };
+      interval = {
+        Weekday = 0;
+      };
       options = "--delete-older-than 30d";
     };
   };
-
-  nixpkgs.hostPlatform = "aarch64-darwin";
 
   users.users = {
     ${user} = {
@@ -31,8 +31,6 @@
       home = "/Users/${user}";
     };
   };
-
-  environment.systemPackages = with pkgs; [ neovim ];
 
   system = {
     primaryUser = user;
