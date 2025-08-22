@@ -6,12 +6,12 @@
   clock24 = true;
   focusEvents = true;
   historyLimit = 4096;
+  terminal = "tmux-256color";
 
   extraConfig = ''
     set -s  extended-keys on
     set -g  visual-activity off
     set -gq allow-passthrough on
-    set -g default-terminal   'tmux-256color'
     set -as terminal-features 'xterm*:extkeys'
     set -a  terminal-features 'xterm-256color:RGB'
 

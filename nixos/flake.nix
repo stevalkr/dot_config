@@ -5,6 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-stevalkr.url = "github:stevalkr/nixpkgs?ref=stevalkr-patch-fzf";
 
+    devkit = {
+      url = "github:stevalkr/devkit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -86,7 +91,7 @@
           pkgs = import nixpkgs {
             inherit system;
           };
-          specialArgs = { inherit user inputs; };
+          extraSpecialArgs = { inherit user inputs; };
           modules = [
             ./modules/shared/home.nix
           ];

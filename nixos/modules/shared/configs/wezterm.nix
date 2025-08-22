@@ -35,7 +35,7 @@
     ---@param direction "Left" | "Down" | "Up" | "Right"
     utils.activate_pane = function(opts, direction)
       opts.action = function(win, pane)
-        wezterm.background_child_process({ 'bash', '-ilc',
+        wezterm.background_child_process({ 'env', '__NO_AUTO_FISH=1', 'bash', '-ilc',
           'multiplexer activate_pane ' .. direction:lower()
         })
       end
@@ -49,7 +49,7 @@
     ---@param amount? number
     utils.adjust_pane = function(opts, direction, amount)
       opts.action = function(win, pane)
-        wezterm.background_child_process({ 'bash', '-ilc',
+        wezterm.background_child_process({ 'env', '__NO_AUTO_FISH=1', 'bash', '-ilc',
           'multiplexer resize_pane ' .. direction:lower()
         })
       end

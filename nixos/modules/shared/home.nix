@@ -49,6 +49,8 @@
       tree-sitter
       markdownlint-cli
 
+      inputs.devkit.packages.${pkgs.system}.sk
+
       (runCommand "multiplexer-nvim" { } ''
         script_path=${
           pkgs.fetchurl {

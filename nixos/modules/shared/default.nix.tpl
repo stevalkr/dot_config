@@ -50,7 +50,7 @@
           ''
             source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
 
-            if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+            if [[ -z "''$__NO_AUTO_FISH" && $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
             then
               shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
               exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
@@ -58,7 +58,7 @@
           ''
         else
           ''
-            if [[ $(${pkgs.procps}/bin/ps -o command= -p "$PPID" | ${pkgs.gawk}/bin/awk '{print $1}') != 'fish' ]]
+            if [[ -z "''$__NO_AUTO_FISH" && $(${pkgs.procps}/bin/ps -o command= -p "$PPID" | ${pkgs.gawk}/bin/awk '{print $1}') != 'fish' ]]
             then
                 exec fish --login
             fi
