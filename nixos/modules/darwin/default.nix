@@ -32,6 +32,14 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    mtr
+  ];
+
+  services = {
+    openssh.enable = true;
+  };
+
   system = {
     primaryUser = user;
 

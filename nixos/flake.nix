@@ -3,10 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-stevalkr.url = "github:stevalkr/nixpkgs?ref=stevalkr-patch-fzf";
 
-    devkit = {
-      url = "github:stevalkr/devkit";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -15,12 +14,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+    devkit = {
+      url = "github:stevalkr/devkit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-src = {
+      url = "github:neovim/neovim";
+      flake = false;
+    };
   };
 
   outputs =
@@ -43,11 +45,52 @@
       ];
     in
     {
+      packages = nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          update = pkgs.writeShellScriptBin "update" ''
+            #!/usr/bin/env bash
+            ${pkgs._1password-cli}/bin/op inject -f -i "./modules/shared/default.nix.tpl" -o "./modules/shared/default.nix"
+            ${pkgs._1password-cli}/bin/op inject -f -i "./modules/shared/configs/sing-box.json.tpl" -o "./modules/shared/configs/sing-box.json"
+          '';
+
+          install = pkgs.writeShellScriptBin "install" ''
+            #!/usr/bin/env bash
+            if [[ -f "/etc/nixos/flake.nix" ]]; then
+              echo "NixOS configuration already exists at /etc/nixos/flake.nix, backing it up."
+              sudo mv "/etc/nixos/flake.nix" "/etc/nixos/flake.nix.bak"
+            fi
+            hostname=$(hostname)
+            config_url=$(dirname $(readlink -f $0))
+            current_system=$(${pkgs.nix}/bin/nix eval --impure --expr 'builtins.currentSystem')
+            sudo bash -c "cat <<EOF > '/etc/nixos/flake.nix'
+            {
+              inputs = {
+                nixos-config.url = "path:$config_url";
+              };
+              outputs =
+                { nixos-config, ... }:
+                {
+                  nixosConfigurations.$hostname = nixos-config.nixosConfigurations.$current_system.extendModules {
+                    modules = [
+                      ./hardware-configuration.nix
+                    ];
+                  };
+                };
+            }
+            EOF"
+          '';
+        }
+      );
+
       nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (
         system:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit user; };
+          specialArgs = { inherit user inputs; };
           modules = [
             ./modules/nixos
             ./modules/shared
@@ -68,7 +111,7 @@
         system:
         nix-darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = { inherit user; };
+          specialArgs = { inherit user inputs; };
           modules = [
             ./modules/darwin
             ./modules/shared
@@ -88,9 +131,7 @@
       homeConfigurations = nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (
         system:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-          };
+          pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = { inherit user inputs; };
           modules = [
             ./modules/shared/home.nix

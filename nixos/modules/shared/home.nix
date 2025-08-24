@@ -1,8 +1,8 @@
 {
   pkgs,
   user,
-  osConfig,
   inputs,
+  osConfig,
   ...
 }:
 
@@ -31,6 +31,8 @@
 
       pixi
       gemini-cli
+
+      treefmt
 
       clang-tools
       cmake-format
@@ -87,8 +89,30 @@
 
     wezterm = import ./configs/wezterm.nix;
 
+    # TODO: https://github.com/NixOS/nixpkgs/pull/433661
     fzf = import ./configs/fzf.nix {
-      package = inputs.nixpkgs-stevalkr.legacyPackages.${pkgs.system}.fzf;
+      package = pkgs.fzf.overrideAttrs (oldAttrs: {
+        postInstall = ''
+          install bin/fzf-tmux $out/bin
+
+          installManPage man/man1/fzf.1 man/man1/fzf-tmux.1
+
+          install -D plugin/* -t $out/share/vim-plugins/fzf/plugin
+          mkdir -p $out/share/nvim
+          ln -s $out/share/vim-plugins/fzf $out/share/nvim/site
+
+          # Install shell integrations
+          install -D shell/* -t $out/share/fzf/
+
+          cat <<SCRIPT > $out/bin/fzf-share
+          #!${pkgs.runtimeShell}
+          # Run this script to find the fzf shared folder where all the shell
+          # integration scripts are living.
+          echo $out/share/fzf
+          SCRIPT
+          chmod +x $out/bin/fzf-share
+        '';
+      });
     };
 
     direnv = {
@@ -97,7 +121,7 @@
 
     neovim = import ./configs/neovim.nix {
       inherit pkgs;
-      package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+      inherit (inputs) neovim-src;
     };
   };
 }

@@ -1,2 +1,2 @@
 modules/shared/default.nix
-modules/shared/configs/sing-box.nix
+modules/shared/configs/sing-box.json

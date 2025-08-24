@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   nixpkgs = {
@@ -34,12 +34,17 @@
   ];
 
   environment = {
-    shells = [
-      pkgs.fish
+    shells = with pkgs; [
+      fish
     ];
 
-    systemPackages = [
-      pkgs.fish
+    systemPackages = with pkgs; [
+      fish
+    ];
+
+    pathsToLink = [
+      "/share/zsh"
+      "/share/fish"
     ];
   };
 

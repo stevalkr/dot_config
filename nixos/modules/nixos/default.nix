@@ -69,11 +69,6 @@
     man.generateCaches = true;
   };
 
-  environment.pathsToLink = [
-    "/share/zsh"
-    "/share/fish"
-  ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -116,7 +111,7 @@
     # Enable sing-box
     sing-box = {
       enable = true;
-      settings = ../shared/configs/sing-box.nix;
+      settings = builtins.fromJSON (builtins.readFile ../shared/configs/sing-box.json);
     };
 
     # Enable X11
