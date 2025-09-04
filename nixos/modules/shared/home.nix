@@ -85,7 +85,16 @@
 
     fish = import ./configs/fish.nix { inherit pkgs; };
 
-    tmux = import ./configs/tmux.nix;
+    tmux = import ./configs/tmux.nix {
+      package = pkgs.tmux.overrideAttrs (oldAttrs: {
+        src = pkgs.fetchFromGitHub {
+          owner = "tmux";
+          repo = "tmux";
+          rev = "master";
+          hash = "sha256-wI1YU75yum8/1KEHrAifX0T7TEV3gXivjFZiX702sqc=";
+        };
+      });
+    };
 
     wezterm = import ./configs/wezterm.nix;
 

@@ -7,10 +7,11 @@
     -----------
     local utils = {}
 
+    utils.is_ssh = function(pane) return pane:get_user_vars().IS_SSH == 'true' end
     utils.is_vim = function(pane) return pane:get_user_vars().IS_NVIM == 'true' end
     utils.is_tmux = function(pane) return pane:get_user_vars().IS_TMUX == 'true' end
     utils.is_zellij = function(pane) return pane:get_user_vars().IS_ZELLIJ == 'true' end
-    utils.is_vim_or_tmux_or_zellij = function(pane) return utils.is_vim(pane) or utils.is_tmux(pane) or utils.is_zellij(pane) end
+    utils.should_forward = function(pane) return utils.is_ssh(pane) or utils.is_vim(pane) or utils.is_tmux(pane) or utils.is_zellij(pane) end
 
     ---@class wezterm.key
     ---@field key string
@@ -40,7 +41,7 @@
         })
       end
       return utils.if_run(function(_, pane)
-        return not utils.is_vim_or_tmux_or_zellij(pane)
+        return not utils.should_forward(pane)
       end, opts)
     end
 
@@ -54,7 +55,7 @@
         })
       end
       return utils.if_run(function(_, pane)
-        return not utils.is_vim_or_tmux_or_zellij(pane)
+        return not utils.should_forward(pane)
       end, opts)
     end
 
@@ -97,7 +98,7 @@
     config.macos_window_background_blur = 5
 
     config.font_size = 12
-    config.line_height = 1.2
+    config.line_height = 1
     config.font = wezterm.font({
       family = 'Monaspace Argon',
       weight = 'Regular',
@@ -156,7 +157,7 @@
       utils.adjust_pane({ key = 'j', mods = 'CTRL|SHIFT' }, 'Down'),
       utils.adjust_pane({ key = 'k', mods = 'CTRL|SHIFT' }, 'Up'),
       utils.adjust_pane({ key = 'l', mods = 'CTRL|SHIFT' }, 'Right'),
-      utils.if_run(function(_, pane) return not utils.is_vim_or_tmux_or_zellij(pane) end, {
+      utils.if_run(function(_, pane) return not utils.should_forward(pane) end, {
         key = 'g',
         mods = 'CMD',
         action = function(win, pane)

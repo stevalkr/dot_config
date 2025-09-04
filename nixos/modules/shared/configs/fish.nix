@@ -90,6 +90,17 @@
       description = "Change to workspace directory";
     };
 
+    s = {
+      body = ''
+        __fish_set_user_var IS_SSH true
+
+        command ssh $argv
+
+        __fish_set_user_var IS_SSH false
+      '';
+      wraps = "ssh";
+    };
+
     t = {
       body = ''
         set -l ori_multiplexer_list $MULTIPLEXER_LIST
@@ -101,6 +112,7 @@
         set -gx MULTIPLEXER_LIST $ori_multiplexer_list
         __fish_set_user_var IS_TMUX false
       '';
+      wraps = "tmux";
     };
 
     z = {
@@ -114,6 +126,7 @@
         set -gx MULTIPLEXER_LIST $ori_multiplexer_list
         __fish_set_user_var IS_ZELLIJ false
       '';
+      wraps = "zellij";
     };
 
     prof = {
