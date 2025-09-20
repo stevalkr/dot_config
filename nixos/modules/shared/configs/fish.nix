@@ -129,6 +129,13 @@
       wraps = "zellij";
     };
 
+    clear_ds_store = {
+      body = ''
+        fd -HI -tf '^\.DS_Store$' -E '.timemachine' -E 'Time Machine' -E '.Trashes' -X rm
+      '';
+      description = "Recursively delete all .DS_Store files in the current directory";
+    };
+
     prof = {
       body = ''
         if test (count $argv) -lt 2

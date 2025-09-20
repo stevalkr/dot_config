@@ -40,6 +40,7 @@
 
     systemPackages = with pkgs; [
       fish
+      sccache
     ];
 
     pathsToLink = [

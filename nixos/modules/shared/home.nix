@@ -87,14 +87,11 @@
 
     tmux = import ./configs/tmux.nix {
       package = pkgs.tmux.overrideAttrs (oldAttrs: {
-        src = pkgs.fetchFromGitHub {
-          owner = "tmux";
-          repo = "tmux";
-          rev = "master";
-          hash = "sha256-wI1YU75yum8/1KEHrAifX0T7TEV3gXivjFZiX702sqc=";
-        };
+        src = inputs.tmux-src;
       });
     };
+
+    zoxide = import ./configs/zoxide.nix;
 
     wezterm = import ./configs/wezterm.nix;
 

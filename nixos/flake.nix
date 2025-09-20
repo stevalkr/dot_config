@@ -19,6 +19,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    tmux-src = {
+      url = "github:tmux/tmux";
+      flake = false;
+    };
+
     neovim-src = {
       url = "github:neovim/neovim";
       flake = false;
