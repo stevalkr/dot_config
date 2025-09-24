@@ -83,6 +83,14 @@
     nix-index.enable = true;
     man.generateCaches = true;
 
+    git = import ./configs/git.nix {
+      ssh-signer =
+        if pkgs.stdenv.isDarwin then
+          "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+        else
+          "${pkgs.lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+    };
+
     fish = import ./configs/fish.nix { inherit pkgs; };
 
     tmux = import ./configs/tmux.nix {
