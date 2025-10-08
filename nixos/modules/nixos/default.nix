@@ -89,6 +89,9 @@
       enable = true;
       enableSSHSupport = true;
     };
+
+    _1password.enable = true;
+    _1password-gui.enable = true;
   };
 
   # List services that you want to enable

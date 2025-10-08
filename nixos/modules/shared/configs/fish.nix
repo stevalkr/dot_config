@@ -309,6 +309,9 @@
   };
 
   interactiveShellInit = ''
+    # Allow unfree packages
+    set -gx NIXPKGS_ALLOW_UNFREE 1
+
     # Set Options for fzf-fish
     set -gx fzf_directory_opts '--bind=ctrl-d:reload(fd --type d --type l --color=always --strip-cwd-prefix)' '--bind=ctrl-f:reload(fd --color=always)'
 

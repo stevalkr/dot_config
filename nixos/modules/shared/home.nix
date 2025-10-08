@@ -83,6 +83,14 @@
     nix-index.enable = true;
     man.generateCaches = true;
 
+    ssh = import ./configs/ssh.nix {
+      ssh-agent =
+        if pkgs.stdenv.isDarwin then
+          "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+        else
+          "~/.1password/agent.sock";
+    };
+
     git = import ./configs/git.nix {
       ssh-signer =
         if pkgs.stdenv.isDarwin then
