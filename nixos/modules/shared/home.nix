@@ -6,6 +6,43 @@
   ...
 }:
 
+let
+  getExeInPath =
+    x:
+    pkgs.lib.findFirst (p: builtins.pathExists p) null (
+      map (p: /. + p + "/${x}") (pkgs.lib.splitString ":" (builtins.getEnv "PATH"))
+    );
+
+  os =
+    if pkgs.stdenv.isDarwin then
+      "darwin"
+    else if (builtins.getEnv "WSLENV") != "" then
+      "wsl"
+    else
+      "linux";
+
+  osSpecific = {
+    darwin = {
+      homeDirectory = "/Users/${user}";
+      ssh-agent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+      ssh-signer = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+    };
+
+    linux = {
+      homeDirectory = "/home/${user}";
+      ssh-agent = "~/.1password/agent.sock";
+      ssh-signer = pkgs.lib.getExe' pkgs._1password-gui "op-ssh-sign";
+    };
+
+    wsl = {
+      homeDirectory = "/home/${user}";
+      ssh-agent = null;
+      ssh-signer = toString (getExeInPath "op-ssh-sign-wsl.exe");
+    };
+  };
+
+  osSpecificConfigs = osSpecific.${os} or { };
+in
 {
   nix.gc = {
     automatic = true;
@@ -15,9 +52,10 @@
 
   home = {
     username = user;
-    homeDirectory = osConfig.users.users.${user}.home;
+    homeDirectory = osConfig.users.users.${user}.home or osSpecificConfigs.homeDirectory;
 
     file = { };
+
     packages = with pkgs; [
       gh
       git
@@ -82,21 +120,14 @@
   programs = {
     nix-index.enable = true;
     man.generateCaches = true;
+    home-manager.enable = osConfig == null;
 
     ssh = import ./configs/ssh.nix {
-      ssh-agent =
-        if pkgs.stdenv.isDarwin then
-          "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-        else
-          "~/.1password/agent.sock";
+      inherit (osSpecificConfigs) ssh-agent;
     };
 
     git = import ./configs/git.nix {
-      ssh-signer =
-        if pkgs.stdenv.isDarwin then
-          "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-        else
-          "${pkgs.lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+      inherit (osSpecificConfigs) ssh-signer;
     };
 
     fish = import ./configs/fish.nix { inherit pkgs; };
