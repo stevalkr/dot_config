@@ -54,6 +54,21 @@
     };
   };
 
+  homebrew = {
+    enable = true;
+    onActivation.cleanup = "zap";
+
+    casks = [
+      "visual-studio-code"
+      "docker-desktop"
+      "betterdisplay"
+      "1password"
+      "raycast"
+      "xquartz"
+      "sfm"
+    ];
+  };
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 6;

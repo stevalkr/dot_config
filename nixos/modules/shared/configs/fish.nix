@@ -15,6 +15,22 @@
     }
 
     {
+      name = "brew";
+      src = pkgs.runCommand "brew-integration" { } ''
+        mkdir -p $out/conf.d/
+        mkdir -p $out/completions/
+
+        cat <<EOF > $out/conf.d/brew.fish
+        if test -d /opt/homebrew/bin
+            eval (/opt/homebrew/bin/brew shellenv)
+            set -p fish_complete_path /opt/homebrew/share/fish/completions
+            set -p fish_complete_path /opt/homebrew/share/fish/vendor_completions.d
+        end
+        EOF
+      '';
+    }
+
+    {
       name = "ros";
       src = pkgs.runCommand "ros-integration" { } ''
         mkdir -p $out/conf.d/
