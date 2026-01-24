@@ -46,7 +46,7 @@ in
 {
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
+    dates = "weekly";
     options = "--delete-older-than 30d";
   };
 
@@ -89,7 +89,7 @@ in
       tree-sitter
       markdownlint-cli
 
-      inputs.devkit.packages.${pkgs.system}.sk
+      inputs.devkit.packages.${pkgs.stdenv.hostPlatform.system}.sk
 
       (runCommand "multiplexer-nvim" { } ''
         script_path=${

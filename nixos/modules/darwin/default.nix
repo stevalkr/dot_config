@@ -58,6 +58,11 @@
     enable = true;
     onActivation.cleanup = "zap";
 
+    taps = [
+      "brewforge/chinese"
+      "brewforge/extras"
+    ];
+
     casks = [
       "visual-studio-code"
       "docker-desktop"
@@ -65,7 +70,7 @@
       "1password"
       "raycast"
       "xquartz"
-      "sfm"
+      "v2rayn"
     ];
   };
 

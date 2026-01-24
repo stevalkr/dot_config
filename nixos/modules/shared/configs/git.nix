@@ -3,15 +3,22 @@
 {
   enable = true;
 
-  aliases = {
-    cm = "commit";
-    st = "status";
-    ll = "logline";
-    logline = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-  };
+  settings = {
+    alias = {
+      cm = "commit";
+      st = "status";
+      ll = "logline";
+      logline = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+    };
 
-  userName = "Steve Walker";
-  userEmail = "65963536+stevalkr@users.noreply.github.com";
+    user = {
+      name = "Steve Walker";
+      email = "65963536+stevalkr@users.noreply.github.com";
+    };
+
+    core.editor = "nvim";
+    init.defaultBranch = "main";
+  };
 
   signing = {
     format = "ssh";
@@ -38,9 +45,4 @@
     "Thumbs.db"
     "ehthumbs.db"
   ];
-
-  extraConfig = {
-    core.editor = "nvim";
-    init.defaultBranch = "main";
-  };
 }
