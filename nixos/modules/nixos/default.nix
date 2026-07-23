@@ -108,12 +108,6 @@
     # Better support for general peripherals
     libinput.enable = true;
 
-    # Enable sing-box
-    sing-box = {
-      enable = true;
-      settings = builtins.fromJSON (builtins.readFile ../shared/configs/sing-box.json);
-    };
-
     # Enable X11
     xserver = {
       enable = true;

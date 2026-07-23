@@ -63,10 +63,15 @@
       "brewforge/extras"
     ];
 
+    brews = [
+      "sccache"
+      "libomp"
+    ];
+
     casks = [
       "visual-studio-code"
       "docker-desktop"
-      "betterdisplay"
+      "1password-cli"
       "1password"
       "raycast"
       "xquartz"

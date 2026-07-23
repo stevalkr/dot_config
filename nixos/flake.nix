@@ -19,11 +19,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    tmux-src = {
-      url = "github:tmux/tmux";
-      flake = false;
-    };
-
     neovim-src = {
       url = "github:neovim/neovim";
       flake = false;
@@ -59,7 +54,6 @@
           update = pkgs.writeShellScriptBin "update" ''
             #!/usr/bin/env bash
             ${pkgs._1password-cli}/bin/op inject -f -i "./modules/shared/default.nix.tpl" -o "./modules/shared/default.nix"
-            ${pkgs._1password-cli}/bin/op inject -f -i "./modules/shared/configs/sing-box.json.tpl" -o "./modules/shared/configs/sing-box.json"
           '';
 
           install = pkgs.writeShellScriptBin "install" ''

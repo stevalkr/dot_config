@@ -1,9 +1,5 @@
-{ package }:
-
 {
   enable = true;
-
-  inherit package;
 
   mouse = true;
   keyMode = "vi";

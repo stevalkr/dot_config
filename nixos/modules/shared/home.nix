@@ -132,11 +132,7 @@ in
 
     fish = import ./configs/fish.nix { inherit pkgs; };
 
-    tmux = import ./configs/tmux.nix {
-      package = pkgs.tmux.overrideAttrs (oldAttrs: {
-        src = inputs.tmux-src;
-      });
-    };
+    tmux = import ./configs/tmux.nix;
 
     zoxide = import ./configs/zoxide.nix;
 

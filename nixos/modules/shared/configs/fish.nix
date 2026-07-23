@@ -38,10 +38,10 @@
 
         cat <<EOF > $out/conf.d/ros.fish
         if test "\$ROS_VERSION" = 1 && set -q ROS_PACKAGE_PATH
-            set -l complete_file \$ROS_PACKAGE_PATH/rosbash/rosfish
-            if test -f \$complete_file
-                source \$complete_file
-            end
+            # set -l complete_file \$ROS_PACKAGE_PATH/rosbash/rosfish
+            # if test -fo \$complete_file
+            #     source \$complete_file
+            # end
         end
         EOF
 
