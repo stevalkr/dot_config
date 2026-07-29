@@ -59,8 +59,14 @@
     onActivation.cleanup = "zap";
 
     taps = [
-      "brewforge/chinese"
-      "brewforge/extras"
+      {
+        name = "brewforge/chinese";
+        trusted = true;
+      }
+      {
+        name = "brewforge/extras";
+        trusted = true;
+      }
     ];
 
     brews = [

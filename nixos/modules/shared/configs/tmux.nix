@@ -4,6 +4,7 @@
   mouse = true;
   keyMode = "vi";
   clock24 = true;
+  escapeTime = 0;
   focusEvents = true;
   historyLimit = 4096;
   terminal = "tmux-256color";
@@ -12,14 +13,14 @@
     set -s  extended-keys on
     set -g  visual-activity off
     set -gq allow-passthrough on
-    set -as terminal-features 'xterm*:extkeys'
-    set -a  terminal-features 'xterm-256color:RGB'
 
     set -g update-environment "MULTIPLEXER MULTIPLEXER_LIST \
                               I3SOCK \
                               ZELLIJ_PANE_ID ZELLIJ \
                               KITTY_WINDOW_ID KITTY_LISTEN_ON KITTY_PID \
                               WEZTERM_PANE WEZTERM_UNIX_SOCKET WEZTERM_EXECUTABLE"
+
+    bind-key S display-panes -d 5000 'swap-pane -d -t %%'
 
     bind-key -n C-h if -F '#{@pane-is-vim}' { send-keys C-h } { run-shell 'multiplexer activate_pane left' }
     bind-key -n C-j if -F '#{@pane-is-vim}' { send-keys C-j } { run-shell 'multiplexer activate_pane down' }

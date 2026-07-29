@@ -83,7 +83,7 @@ in
       lua-language-server
 
       nixd
-      nixfmt-rfc-style
+      nixfmt
 
       codespell
       tree-sitter
