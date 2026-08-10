@@ -82,6 +82,7 @@
       "raycast"
       "xquartz"
       "v2rayn"
+      "codex"
     ];
   };
 

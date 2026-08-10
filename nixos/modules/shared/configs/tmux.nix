@@ -57,5 +57,15 @@
     bind-key   -T copy-mode-vi v      'send-keys -X begin-selection'
     bind-key   -T copy-mode-vi y      'send-keys -X copy-pipe-and-cancel "pbcopy"'
     bind-key   -T copy-mode-vi C-v    'send-keys -X rectangle-toggle ; send-keys -X begin-selection'
+
+    bind-key -T copy-mode-vi WheelUpPane if -F '#{selection_active}' \
+        { send-keys -X -N 3 scroll-up; send-keys -X -N 3 cursor-down } \
+        { send-keys -X -N 3 scroll-up }
+    bind-key -T copy-mode-vi WheelDownPane if -F '#{selection_active}' \
+        { send-keys -X -N 3 scroll-down; send-keys -X -N 3 cursor-up } \
+        { send-keys -X -N 3 scroll-down }
+
+    bind-key H break-pane -d -n hidden-pane
+    bind-key R join-pane -h -s :hidden-pane.0
   '';
 }
