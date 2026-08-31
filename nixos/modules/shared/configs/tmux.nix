@@ -13,6 +13,7 @@
     set -s  extended-keys on
     set -g  visual-activity off
     set -gq allow-passthrough on
+    set -as terminal-features 'xterm*:extkeys'
 
     set -g update-environment "MULTIPLEXER MULTIPLEXER_LIST \
                               I3SOCK \

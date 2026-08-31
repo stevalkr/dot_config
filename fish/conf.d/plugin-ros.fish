@@ -1,0 +1,1 @@
+/nix/store/rp55pvhqswz85ann40a5a4nbzvk6rjfd-home-manager-files/.config/fish/conf.d/plugin-ros.fish
