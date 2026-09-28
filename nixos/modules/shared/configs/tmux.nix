@@ -13,6 +13,7 @@
     set -s  extended-keys on
     set -g  visual-activity off
     set -gq allow-passthrough on
+    set -g  status-left-length 50
     set -as terminal-features 'xterm*:extkeys'
 
     set -g update-environment "MULTIPLEXER MULTIPLEXER_LIST \

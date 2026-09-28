@@ -79,6 +79,7 @@
       "docker-desktop"
       "1password-cli"
       "1password"
+      "wezterm"
       "raycast"
       "xquartz"
       "v2rayn"
